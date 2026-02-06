@@ -1,0 +1,29 @@
+!scriptcard {{
+  --#title|Tavern Name Generator
+  --#leftsub|Ten Random Tavern Names
+  --#overridetemplate|path
+  --~dummy|array;define;prefix;The Red;The Purple;The Scalded;The Wild;The Wayward;The Lonely;The Green;The Pious;The Silent;The Gilded;The Ancient;The Silver;The Hearty;The Pallid;The Glimmering;The Shining;The Mystic;The Rusty;The Brown;The Tempting;The Crimson;The Arch;The Fiery;The High;The Drowned;The Gray;The Sodden;The Blazing;The Glib;The Sacred;The Golden;The Polished;The Virtuous;The Starving;The Pearl;The Shimmering;The Divine;The Ivory;The Risen;The Laughing;The Dashing;The Lord's;The Weary;The Tipsy;The Duke's;The Shattered;The Stalking;The Screaming;The Silent;The Clever
+  --~dummy|array;define;suffix;Mare;Giant;Rat;Knight;Squire;Horseshoe;Dragon;Salamander;Traveler;Lion;Wayfarer;Adventurer;Blade;Lantern;Raven;Flagon;Goblin;Fiend;Wheel;Council;Bat;Jester;Apple;Hole;Pony;Mane;Ghost;Mage;Jewel;Raptor;Wanderer;Arrow;Mace;Willow;Crow;Dwarf;Sprite;Standard;Stalker;Gnoll;Seer;Cup;Keg;Lamb;Rest;Devil;Club;Retreat;Beast;Bumblebee
+  --+|[br]
+
+  --~dummy|array;define;loop;1;2;3;4;5;6;7;8;9;10
+
+  --%gen|foreach;loop
+  --=NameType|1d2
+  --?"[$NameType.Raw]" -eq "2"|>Type2|>Type1
+  --%|
+
+  --X|
+  --:Type1|
+  --=W1|1d[@prefix()] - 1
+  --=W2|1d[@suffix()] - 1
+  --+|[@prefix([$W1.Raw])] [@suffix([$W2.Raw])]
+  --<|
+
+  --:Type2|
+  --=W1|1d[@suffix()] - 1 
+  --=W2|1d[@suffix()] - 1
+  --+|The [@suffix([$W2.Raw])] and [@suffix([$W1.Raw])]
+  --<|
+ 
+}}
