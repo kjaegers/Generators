@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Tavern Name Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #2c1810 0%, #4a3428 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #f4e9d8 0%, #e8dcc5 100%);
+            border: 4px solid #8b6f47;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+                        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #4a2c0f;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(139, 111, 71, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b4423;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(145deg, #8b6f47 0%, #6b4423 100%);
+            border: 3px solid #4a2c0f;
+            border-radius: 8px;
+            color: #f4e9d8;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .generate-btn:hover {
+            background: linear-gradient(145deg, #6b4423 0%, #4a2c0f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid #8b6f47;
+            border-radius: 8px;
+            min-height: 100px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item {
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: linear-gradient(90deg, #fff5e6 0%, #f4e9d8 100%);
+            border-left: 4px solid #8b6f47;
+            border-radius: 4px;
+            color: #2c1810;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .result-item:hover {
+            background: linear-gradient(90deg, #f4e9d8 0%, #e8dcc5 100%);
+            transform: translateX(5px);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #8b6f47;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .decoration {
+            text-align: center;
+            font-size: 2em;
+            color: #8b6f47;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decoration">🍺 🏠 🍺</div>
+        <h1>Tavern Name Generator</h1>
+        <p class="subtitle">Need to give a drinking establishment a bit of character in a hurry? This generator will give your tavern or inn a neme. Perhaps there is something more to the name than meets the eye? After all, even the strangest combination (like The Glib Horseshoe) could be explained by a fantastical tale - a tale that might just spawn an adventure. </p>
+        
+        <button class="generate-btn" onclick="generateResults()">Generate Tavern Names</button>
+        
+        <div class="output" id="output">
+            <p class="empty-message">Click the button above to generate tavern names...</p>
+        </div>
+        <div class="decoration">🍺 🏠 🍺</div>
+        <p style="text-align: center; margin-top: 20px; color: #6b4423; font-size: 0.9em; font-style: italic;">Copyright © 2026 - Kurt Jaegers - Released under the CC-BY (Attribution) License</p>
+    </div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION: Customize these values for your generator
+        // ============================================================
+        
+        // Prefix list (adjectives with "The")
+        const prefixList = [
+            "The Red", "The Purple", "The Scalded", "The Wild", "The Wayward", 
+            "The Lonely", "The Green", "The Pious", "The Silent", "The Gilded", 
+            "The Ancient", "The Silver", "The Hearty", "The Pallid", "The Glimmering", 
+            "The Shining", "The Mystic", "The Rusty", "The Brown", "The Tempting", 
+            "The Crimson", "The Arch", "The Fiery", "The High", "The Drowned", 
+            "The Gray", "The Sodden", "The Blazing", "The Glib", "The Sacred", 
+            "The Golden", "The Polished", "The Virtuous", "The Starving", "The Pearl", 
+            "The Shimmering", "The Divine", "The Ivory", "The Risen", "The Laughing", 
+            "The Dashing", "The Lord's", "The Weary", "The Tipsy", "The Duke's", 
+            "The Shattered", "The Stalking", "The Screaming", "The Silent", "The Clever"
+        ];
+
+        // Suffix list (nouns)
+        const suffixList = [
+            "Mare", "Giant", "Rat", "Knight", "Squire", "Horseshoe", "Dragon", 
+            "Salamander", "Traveler", "Lion", "Wayfarer", "Adventurer", "Blade", 
+            "Lantern", "Raven", "Flagon", "Goblin", "Fiend", "Wheel", "Council", 
+            "Bat", "Jester", "Apple", "Hole", "Pony", "Mane", "Ghost", "Mage", 
+            "Jewel", "Raptor", "Wanderer", "Arrow", "Mace", "Willow", "Crow", 
+            "Dwarf", "Sprite", "Standard", "Stalker", "Gnoll", "Seer", "Cup", 
+            "Keg", "Lamb", "Rest", "Devil", "Club", "Retreat", "Beast", "Bumblebee"
+        ];
+
+        // Number of results to generate per click
+        const NUM_RESULTS = 10;
+
+        // ============================================================
+        // HELPER FUNCTIONS
+        // ============================================================
+        
+        /**
+         * Get a random item from an array
+         */
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // ============================================================
+        // GENERATION LOGIC: Customize this function
+        // ============================================================
+        
+        /**
+         * Generate a single tavern name
+         * Two methods:
+         * 1. Prefix + Suffix (e.g., "The Red Mare")
+         * 2. The + Suffix and Suffix (e.g., "The Knight and Pony")
+         */
+        function generateSingleResult() {
+            // Randomly choose between the two methods
+            const method = Math.random() < 0.5 ? 1 : 2;
+            
+            if (method === 1) {
+                // Method 1: Prefix + Suffix
+                const prefix = getRandomItem(prefixList);
+                const suffix = getRandomItem(suffixList);
+                return prefix + " " + suffix;
+            } else {
+                // Method 2: The + Suffix and Suffix
+                const suffix1 = getRandomItem(suffixList);
+                const suffix2 = getRandomItem(suffixList);
+                return "The " + suffix1 + " and " + suffix2;
+            }
+        }
+
+        /**
+         * Generate multiple results and display them
+         */
+        function generateResults() {
+            const output = document.getElementById('output');
+            output.innerHTML = ''; // Clear previous results
+
+            for (let i = 0; i < NUM_RESULTS; i++) {
+                const result = generateSingleResult();
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.textContent = result;
+                output.appendChild(div);
+            }
+        }
+    </script>
+</body>
+</html>
